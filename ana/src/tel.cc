@@ -1,9 +1,9 @@
 #include "tel.hh"
 #include "loadData.hh"
-#define COPYDATAVECTOR(destination,size_function,element_function) destination.clear(); \
+#define COPYDATAVECTOR(destination,size_function,element_function) destination->clear(); \
                                                                    for (int i=0; i< size_function(tel_pointer);++i)\
                                                                    {\
-                                                                   destination.push_back(element_function(tel_pointer,i)); \
+                                                                   destination->push_back(element_function(tel_pointer,i)); \
                                                                    }
 
 
@@ -13,11 +13,21 @@
 
 tel::tel(const char* name)
 {
+  
   tel_pointer = createTELObject(name);
+  x_ABC = new std::vector<double>();
+  y_ABC = new std::vector<double>();
+  chi2 = new std::vector<double>();
+  DoF = new std::vector<double>();
+
 }
 
 tel::~tel()
 {
+  delete y_ABC;
+  delete x_ABC;
+  delete chi2;
+  delete DoF;
   deleteTELObject(tel_pointer);
 }
 

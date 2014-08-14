@@ -10,14 +10,14 @@ public:
 
   // Declaration of leaf types
   Int_t                 ntracks;
-  std::vector<double>  chi2;
-  std::vector<double>  DoF;
+  std::vector<double>  *chi2;
+  std::vector<double>  *DoF;
 
 
-  std::vector<double>  x_ABC;
+  std::vector<double>  *x_ABC;
 
 
-  std::vector<double>  y_ABC;
+  std::vector<double>  *y_ABC;
 
 
 

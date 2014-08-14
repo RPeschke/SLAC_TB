@@ -19,9 +19,9 @@ void correlation::run()
 {
   while (nextEvent())
   {
-    for (int i = 0; i < m_tel->x_ABC.size();++i)
+    for (int i = 0; i < m_tel->x_ABC->size();++i)
     {
-      for (int j = 0; j < m_abc->cl_address.size();++j)
+      for (int j = 0; j < m_abc->cl_address->size();++j)
       {
         getTel(i);
         getABC(j);
@@ -34,15 +34,15 @@ void correlation::run()
 
 void correlation::getTel(int i)
 {
-  chi2 = m_tel->chi2.at(i);
-  m_x = m_tel->x_ABC.at(i);
-  m_y = m_tel->y_ABC.at(i);
+  chi2 = m_tel->chi2->at(i);
+  m_x = m_tel->x_ABC->at(i);
+  m_y = m_tel->y_ABC->at(i);
   ntracks = m_tel->ntracks;
 }
 
 void correlation::getABC(int i)
 {
-  m_cl_address = m_abc->cl_address.at(i);
+  m_cl_address = m_abc->cl_address->at(i);
 }
 
 bool correlation::nextEvent()

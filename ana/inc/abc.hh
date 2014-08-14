@@ -14,10 +14,10 @@ public:
   Int_t           Tstamp;
   Int_t           nhit;
   Int_t           n1hit;
-  std::vector<int>     hit;
-  std::vector<int>     cl_address;
-  std::vector<int>     cl_size;
-  std::vector<int>     cl_iso2;
+  std::vector<int>     *hit;
+  std::vector<int>     *cl_address;
+  std::vector<int>     *cl_size;
+  std::vector<int>     *cl_iso2;
   Int_t           threshold;
 
 
