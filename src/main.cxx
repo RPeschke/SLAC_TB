@@ -10,21 +10,12 @@
 using namespace std;
 
 int main(int argc, const char ** argv) {
- // gInterpreter->EnableAutoLoading();
-//   auto a = loadFromFile("fdata_Run_349_start_10_last_10.root");
-//   
-//   for (int i = 0; i < a.size();++i)
-//   {
-//     a.getEntry(i);
-//     a.printMemorylocation();
-//     std::cout << (a.hit) << std::endl;
-//   }
-//   
 
-  abc a("fdata_Run_349_start_10_last_10.root");
-  tel t("C:/slac_data/TelescopeFiles1/Telescope001180_x.root");
 
-  TFile *f = new TFile("test.root", "recreate");
+  abc a("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_100_last_100.root");
+  tel t("C:/slac_data/TelescopeFiles1/Telescope001250_x.root");
+
+  TFile *f = new TFile("test_1.root", "recreate");
   correlation c(a, t);
   c.run();
   f->Write();
