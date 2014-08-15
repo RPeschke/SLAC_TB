@@ -15,17 +15,22 @@ public:
   void getTel(int i);
   void getABC(int i);
   bool nextEvent();
+  Double_t calcDistance(Int_t element);
 
 private:
   abc* m_abc= nullptr;
   tel* m_tel =nullptr;
   TTree* m_tree = nullptr;
   Int_t m_cl_address;
+  Int_t m_threshold;
   Double_t m_x;
   Double_t m_y;
   Double_t chi2;
   Double_t ntracks;
+  Int_t abc_hits;
+  Int_t cl_size;
   Int_t eventNR;
+  Double_t distance;
 };
 
 #endif // correlation_h__
