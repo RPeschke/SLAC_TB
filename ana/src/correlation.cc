@@ -2,6 +2,7 @@
 #include "TTree.h"
 #include "abc.hh"
 #include "tel.hh"
+#include "efficiency.hh"
 
 
 correlation::correlation(abc& a, tel& t) :m_abc(&a), m_tel(&t)
@@ -17,6 +18,8 @@ correlation::correlation(abc& a, tel& t) :m_abc(&a), m_tel(&t)
   m_tree->Branch("hits", &abc_hits, "abc_hits/I");
   m_tree->Branch("distance", &distance, "distance/D");
   m_tree->Branch("Cl_Size", &cl_size, "cl_size/I");
+  m_tree->Branch("strip_pos", &m_strip_pos, "strip_pos/I");
+  m_tree->Branch("xvsAddress", &m_chip2hit, "m_chip2hit/I");
   eventNR = 0;
 }
 
@@ -30,6 +33,7 @@ void correlation::run()
       {
         getTel(i);
         getABC(j);
+        m_chip2hit = abs(m_strip_pos - m_cl_address);
         m_tree->Fill();
       }
 
@@ -44,6 +48,7 @@ void correlation::getTel(int i)
   m_y = m_tel->y_ABC->at(i);
   ntracks = m_tel->ntracks;
   distance = calcDistance(i);
+  m_strip_pos = calcStrip_pos(m_x);
 }
 
 void correlation::getABC(int i)
@@ -89,4 +94,19 @@ Double_t correlation::calcDistance(Int_t element)
   }
   dummy_distance = sqrt(dummy_distance);
   return dummy_distance;
+}
+
+Int_t correlation::calcStrip_pos(Double_t hit_x)
+{
+  Double_t dummy = Hit_x2chip_address(hit_x) ;
+  if (dummy<0)
+  {
+    return -1;
+  }
+  else if (dummy>100)
+  {
+    return 101;
+  }
+
+  return static_cast<Int_t>(dummy + 0.5);
 }

@@ -16,13 +16,15 @@ public:
   void getABC(int i);
   bool nextEvent();
   Double_t calcDistance(Int_t element);
-
+  Int_t calcStrip_pos(Double_t hit_x);
+  TTree* m_tree = nullptr;
 private:
   abc* m_abc= nullptr;
   tel* m_tel =nullptr;
-  TTree* m_tree = nullptr;
+  
   Int_t m_cl_address;
   Int_t m_threshold;
+  Int_t m_strip_pos;
   Double_t m_x;
   Double_t m_y;
   Double_t chi2;
@@ -31,6 +33,7 @@ private:
   Int_t cl_size;
   Int_t eventNR;
   Double_t distance;
+  Int_t m_chip2hit;
 };
 
 #endif // correlation_h__
