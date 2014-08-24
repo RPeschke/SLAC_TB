@@ -4,6 +4,9 @@
 #include <vector>
 #include "Rtypes.h"
 
+class TTree;
+
+
 class tel{
 public:
 
@@ -15,13 +18,16 @@ public:
   std::vector<double>  *x_ABC=nullptr;
   std::vector<double>  *y_ABC=nullptr;
   tel(const char* name);
+  tel() = default;
   ~tel();
 
+  void openFile(const char* name);
+  void close();
   Int_t    GetEntry(Long64_t entry);
   Int_t    GetEntries();
 private:
-  void* tel_pointer;
-
+  void* tel_pointer=nullptr;
+  TTree* m_tree=nullptr;
 
 
 };

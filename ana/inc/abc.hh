@@ -4,6 +4,8 @@
 #include "Rtypes.h"
 #include <vector>
 
+class TTree;
+
 class abc {
 public:
 
@@ -21,14 +23,19 @@ public:
   Int_t           threshold;
 
 
-
+  void openFile(const char* name);
+  void close();
   abc(const char* name);
+  abc() = default;
   ~abc();
 
   Int_t    GetEntry(Long64_t entry);
   Int_t    GetEntries();
 private:
-  void* abc_pointer;
+  
+  void* abc_pointer=nullptr;
+  TTree          *fChain;
+
 };
 
 
