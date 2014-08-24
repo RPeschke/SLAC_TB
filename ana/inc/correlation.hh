@@ -2,26 +2,23 @@
 #define correlation_h__
 #include "Rtypes.h"
 
-class abc;
-class tel;
+class telAndDUT;
 class TTree;
-
-
+class TFile;
 class correlation{
 public:
-  correlation(abc& a, tel& t);
-
+  correlation(telAndDUT *tabc);
+  void open(const char* name,TFile * f);
   void run();
-  void getTel(int i);
-  void getABC(int i);
-  bool nextEvent();
-  Double_t calcDistance(Int_t element);
-  Int_t calcStrip_pos(Double_t hit_x);
+  void getTel();
+  void getABC();
+
+
+
   TTree* m_tree = nullptr;
 private:
-  abc* m_abc= nullptr;
-  tel* m_tel =nullptr;
   
+  telAndDUT* m_TAbc=nullptr;
   Int_t m_cl_address;
   Int_t m_threshold;
   Int_t m_strip_pos;
@@ -34,6 +31,7 @@ private:
   Int_t eventNR;
   Double_t distance;
   Int_t m_chip2hit;
+  Double_t m_isololation;
 };
 
 #endif // correlation_h__
