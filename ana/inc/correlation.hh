@@ -32,6 +32,8 @@ private:
   Double_t distance;
   Int_t m_chip2hit;
   Double_t m_isololation;
+  Double_t m_relCorrel;
+  Int_t m_increment=0;
 };
 
 #endif // correlation_h__
