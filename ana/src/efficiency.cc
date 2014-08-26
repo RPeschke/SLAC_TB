@@ -82,10 +82,15 @@ Double_t chip_address2Hit_x(Double_t chip_address)
 void efficiency::run()
 {
   m_tABC->resetTel();
+  
   while (m_tABC->getNextIsolatedTelElement())
   {
-    m_x = m_tABC->m_x;
-    m_y = m_tABC->m_y;
+    bool hit0 = false, hit1 = false, hit2 = false, hit3 = false, hit4 = false;
+    Double_t distance_ABC_channel_Tel_x_pos = 200;
+    m_distance_ABC_channel_Tel_x_pos = 200;
+    m_distance_ABC_channel_Tel_x_pos1 = 200;
+    m_x = m_tABC->m_tel_x;
+    m_y = m_tABC->m_tel_y;
     m_hit = 5;
     Double_t channelnr = Hit_x2chip_address(m_x);
     Int_t ch = telAndDUT::calcStrip_pos(m_x);
@@ -97,32 +102,89 @@ void efficiency::run()
     m_tABC->resetABC();
     while ((m_tABC->getNextABCElement()))
     {
-      if (abs(channelnr-m_tABC->m_cl_address)<1)
+      distance_ABC_channel_Tel_x_pos = abs(channelnr - m_tABC->m_abc_strip_pos);
+      if (distance_ABC_channel_Tel_x_pos<1)
       {
-        ++effi_0[ch];
+        if (!hit0)
+        {
+          ++effi_0[ch];
+          hit0 = true;
+        }
+        
         m_hit =__min(0,m_hit);
+        if (m_distance_ABC_channel_Tel_x_pos>distance_ABC_channel_Tel_x_pos)
+        {
+          m_distance_ABC_channel_Tel_x_pos1 =  m_distance_ABC_channel_Tel_x_pos;
+          m_distance_ABC_channel_Tel_x_pos =distance_ABC_channel_Tel_x_pos;
+        }
+
       }
-      if (abs(channelnr - m_tABC->m_cl_address)<2)
+      if (distance_ABC_channel_Tel_x_pos<2)
       {
-        ++effi_1[ch];
+        if (!hit1)
+        {
+          ++effi_1[ch];
+          hit1 = true;
+        }
+        
         m_hit = __min(1, m_hit);
+        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        {
+          m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
+          m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
+        }
+
       }
-      if (abs(channelnr - m_tABC->m_cl_address) < 3)
+      if (distance_ABC_channel_Tel_x_pos< 3)
       {
-        ++effi_2[ch];
+        if (!hit2)
+        {
+          ++effi_2[ch];
+          hit2 = true;
+        }
+        
         m_hit = __min(2, m_hit);
+        if (m_distance_ABC_channel_Tel_x_pos>distance_ABC_channel_Tel_x_pos)
+        {
+          m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
+          m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
+        }
+
       }
-      if (abs(channelnr - m_tABC->m_cl_address)<4)
+      if (distance_ABC_channel_Tel_x_pos<4)
       {
-        ++effi_3[ch];
+        if (!hit3)
+        {
+          ++effi_3[ch];
+          hit3 = true;
+        }
+        
         m_hit = __min(3, m_hit);
+        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        {
+          m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
+          m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
+        }
+
       }
-      if (abs(channelnr - m_tABC->m_cl_address)<5)
+      if (distance_ABC_channel_Tel_x_pos<5)
       {
-        ++effi_4[ch];
+        if (!hit4)
+        {
+          ++effi_4[ch];
+          hit4 = true;
+        }
+        
         m_hit = __min(4, m_hit);
+        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        {
+          m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
+          m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
+        }
+
       }
     }
+
     m_tmap->Fill();
   }
 
@@ -148,7 +210,7 @@ void efficiency::finish()
   Double_t total_tracks = 0, total_effi0 = 0,total_effi1=0,total_effi2=0,total_effi3=0,total_effi4=0;
 
   m_isolating = m_tABC->getIisolationParameter();
-  m_thr = m_tABC->m_threshold;
+  m_thr = m_tABC->m_abc_threshold;
   for (Channel = 0; Channel <101; ++Channel)
   {
     m_e0 = effi_0[Channel];
@@ -201,6 +263,7 @@ void efficiency::reset()
     effi_4[i] = 0;
     tracks[i] = 0;
   }
+  m_isolating = m_tABC->getIisolationParameter();
 }
 
 void efficiency::createTree(const char* name)
@@ -221,5 +284,9 @@ void efficiency::createTree(const char* name)
   m_tmap->Branch("x", &m_x, "m_x/D");
   m_tmap->Branch("y", &m_y, "m_y/D");
   m_tmap->Branch("hit", &m_hit, "m_hit/D");
+  m_tmap->Branch("dist", &m_tABC->m_comb_distance_tel_abc_0, "m_dist/D");
+  m_tmap->Branch("dist2", & m_distance_ABC_channel_Tel_x_pos, "m_dist2/D");
+  m_tmap->Branch("dist3", &m_distance_ABC_channel_Tel_x_pos1, "m_dist3/D");
+  m_tmap->Branch("isolating", &m_isolating, "m_isolating/D");
 }
 
