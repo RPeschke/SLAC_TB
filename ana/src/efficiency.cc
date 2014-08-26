@@ -210,7 +210,7 @@ void efficiency::finish()
   Double_t total_tracks = 0, total_effi0 = 0,total_effi1=0,total_effi2=0,total_effi3=0,total_effi4=0;
 
   m_isolating = m_tABC->getIisolationParameter();
-  m_thr = m_tABC->m_abc_threshold;
+
   for (Channel = 0; Channel <101; ++Channel)
   {
     m_e0 = effi_0[Channel];
@@ -264,10 +264,12 @@ void efficiency::reset()
     tracks[i] = 0;
   }
   m_isolating = m_tABC->getIisolationParameter();
+  m_thr = m_tABC->m_abc_threshold;
 }
 
 void efficiency::createTree(const char* name)
 {
+
   m_tree = new TTree(name, name);
   m_tree->Branch("effi0", &m_e0, "m_e0/D");
   m_tree->Branch("effi1", &m_e1, "m_e1/D");
@@ -288,5 +290,6 @@ void efficiency::createTree(const char* name)
   m_tmap->Branch("dist2", & m_distance_ABC_channel_Tel_x_pos, "m_dist2/D");
   m_tmap->Branch("dist3", &m_distance_ABC_channel_Tel_x_pos1, "m_dist3/D");
   m_tmap->Branch("isolating", &m_isolating, "m_isolating/D");
+  m_tmap->Branch("threshold", &m_thr, "m_thr/D");
 }
 
