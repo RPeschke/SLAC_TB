@@ -11,7 +11,7 @@ public:
   fileList(){
     
   
-    setfiles("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_10_last_10.root", "C:/slac_data/TelescopeFiles1/Telescope001232_x.root");
+ //   setfiles("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_10_last_10.root", "C:/slac_data/TelescopeFiles1/Telescope001232_x.root");
     setfiles("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_15_last_15.root", "C:/slac_data/TelescopeFiles1/Telescope001233_x.root");
     //setfiles("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_20_last_20.root", "C:/slac_data/TelescopeFiles1/Telescope001234_x.root");
     setfiles("C:/slac_data/abc/run_0712_1243/fdata_Run_352_start_25_last_25.root", "C:/slac_data/TelescopeFiles1/Telescope001235_x.root");
