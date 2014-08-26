@@ -30,6 +30,7 @@ private:
 
   Double_t m_e0,m_e1, m_e2, m_e3, m_e4, m_t,m_thr,m_isolating;
   Double_t m_x, m_y, m_hit;
+  Double_t m_distance_ABC_channel_Tel_x_pos, m_distance_ABC_channel_Tel_x_pos1;
     
 };
 Double_t efficiency1(abc & a, tel& t);
