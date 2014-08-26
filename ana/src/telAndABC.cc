@@ -39,33 +39,36 @@ void telAndDUT::setOffset(eventID offset)
 void telAndDUT::getTel(elementID i)
 {
 
-  chi2 = m_tel->chi2->at(i);
-  m_x = m_tel->x_ABC->at(i);
-  m_y = m_tel->y_ABC->at(i);
-  ntracks = m_tel->ntracks;
-  distance = calcDistance(i);
-  m_strip_pos = calcStrip_pos(m_x);
-
+  tel_chi2_track = m_tel->chi2->at(i);
+  m_tel_x = m_tel->x_ABC->at(i);
+  m_tel_y = m_tel->y_ABC->at(i);
+  m_tel_number_of_tracks = m_tel->ntracks;
+  m_telt_distance_to_next_track = calcDistance(i);
+  m_tel_calc_strip_pos = calcStrip_pos(m_tel_x);
+  m_x_pos_cathegory = calc_xhit_pos_cat(m_tel_x);
+  m_y_pos_cathegory = calc_yhit_pos_cat(m_tel_y);
+  calcCombination();
 }
 
 void telAndDUT::getABC(elementID i)
 {
   if (m_abc->cl_address->size() == 0)
   {
-    m_cl_address = -50;
-    m_threshold = m_abc->threshold;
-    abc_hits = 0;
-    cl_size = 0;
+    m_abc_strip_pos = -50;
+    m_abc_threshold = m_abc->threshold;
+    abc_number_of_hits = 0;
+    m_abc_cluster_size = 0;
     return;
   }
-  m_cl_address = m_abc->cl_address->at(i);
-  if (m_cl_address > 50)
+  m_abc_strip_pos = m_abc->cl_address->at(i);
+  if (m_abc_strip_pos > 50)
   {
-    m_cl_address -= 24;
+    m_abc_strip_pos -= 24;
   }
-  m_threshold = m_abc->threshold;
-  abc_hits = m_abc->cl_address->size();
-  cl_size = m_abc->cl_size->at(i);
+  m_abc_threshold = m_abc->threshold;
+  abc_number_of_hits = m_abc->cl_address->size();
+  m_abc_cluster_size = m_abc->cl_size->at(i);
+  calcCombination();
 }
 
 bool telAndDUT::nextElement()
@@ -120,17 +123,18 @@ bool telAndDUT::getNextABCElement()
   
   if (m_abc_pos < getABC_Size())
   {
+    
     getABC(m_abc_pos++);
     return true;
   }
   return false;
 }
 
-bool telAndDUT::nextElementCutted()
+bool telAndDUT::nextTelElementCutted()
 {
   do
   {
-    if (!nextElement())
+    if (!getNextTelElement())
     {
       return false;
     }
@@ -143,9 +147,12 @@ bool telAndDUT::nextElementCutted()
 
 bool telAndDUT::isGoodElement()
 {
-  // is hit
+ if (m_x_pos_cathegory==hitpos::center&&m_y_pos_cathegory==hitpos::center)
+ {
+   return true;
+ }
 
-  return true;
+  return false;
 }
 
 void telAndDUT::resetABC()
@@ -199,12 +206,17 @@ Int_t telAndDUT::calcStrip_pos(Double_t hit_x)
 bool telAndDUT::getNextIsolatedTelElement()
 {
   bool isolated = true;
-  while (getNextTelElement())
+  while (nextTelElementCutted())
   {
     isolated = true;
     for (elementID i = 0; i < getTEL_Size(); ++i){
       Double_t ch = m_tel->x_ABC->at(i);
-      if (i != getTel_Pos() && abs(Hit_x2chip_address(ch) - Hit_x2chip_address(m_x)) <m_isolation)
+      Int_t cat = calc_yhit_pos_cat(m_tel->y_ABC->at(i));
+
+      if ((i != getTel_Pos() && 
+        abs(Hit_x2chip_address(ch) - Hit_x2chip_address(m_tel_x)) <m_isolation)
+        && cat>hitpos::outside_low
+        &&cat<hitpos::outside_high )
       {
         isolated = false;
         break;
@@ -213,6 +225,7 @@ bool telAndDUT::getNextIsolatedTelElement()
   
     if (isolated)
     {
+      calcCombination();
       return true;
     }
   }
@@ -223,4 +236,59 @@ void telAndDUT::resetEvent()
 {
   eventNR = -1;
 
+}
+
+void telAndDUT::calcCombination()
+{
+  m_comb_distance_tel_abc_0 = m_tel_x - chip_address2Hit_x(m_abc_pos);
+}
+
+hitpos telAndDUT::calc_xhit_pos_cat(Double_t hit_x)
+{
+  if (hit_x < -1.5)
+  {
+    return hitpos::outside_low;
+  }
+  else if (hit_x < -1.4)
+  {
+    return hitpos::edge_low;
+  }
+  else if (hit_x < 6.1)
+  {
+    return hitpos::center;
+  }
+  else if (hit_x < 6.2)
+  {
+    return hitpos::edge_high;
+  }
+  else{
+    return hitpos::outside_high;
+
+  }
+
+}
+
+hitpos telAndDUT::calc_yhit_pos_cat(Double_t hit_y)
+{
+  if (hit_y<-4.4)
+  {
+    return hitpos::outside_low;
+  }
+  else if (hit_y<-3.9)
+  {
+    return hitpos::edge_low;
+  }else if (hit_y<-1.6)
+  {
+    return hitpos::center;
+  }
+  else if (hit_y<-1.35)
+  {
+    return hitpos::edge_high;
+  }
+  else{
+    return hitpos::outside_high;
+
+  }
+
+  
 }
