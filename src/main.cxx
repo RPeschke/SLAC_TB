@@ -21,20 +21,22 @@ int main(int argc, const char ** argv) {
   efficiency e(c);
   efficiency noise(c);
   correlation corr(&c);
-  TFile *f = new TFile("test_2.root", "recreate");
+  TFile *f = new TFile("test_10.root", "recreate");
 
   e.createTree("signal");
   noise.createTree("noise");
   corr.open("corr", f);
-
+  //int i = 20;
   for (size_t i = 0; i < fl.size(); i++)
   {
-    cout << "file " << i << " of " << fl.size() << endl;// " abc file " << fl.getABC(i) << "  tel file: " << fl.getTEL(i) << endl;
+    cout << "file " << i << " of " << fl.size() << " abc file " << fl.getABC(i) << "  tel file: " << fl.getTEL(i) << endl;
     a.openFile(fl.getABC(i));
     t.openFile(fl.getTEL(i));
-    for (Int_t isolatingParameter = 0; isolatingParameter < 6; ++isolatingParameter){
+    for (Int_t iso = 0; iso < 6; ++iso)
+    {
+
       c.resetEvent();
-      c.setIsolationParameter(isolatingParameter);
+      c.setIsolationParameter(iso);
       c.setOffset(1);
       e.reset();
       while (c.nextEvent())
@@ -43,17 +45,17 @@ int main(int argc, const char ** argv) {
         e.run();
       }
       e.finish();
-
-      c.resetEvent();
-      c.setOffset(0);
-      noise.reset();
-      while (c.nextEvent())
-      {
-
-        noise.run();
-      }
-      noise.finish();
     }
+//       c.resetEvent();
+//       c.setOffset(0);
+//       noise.reset();
+//       while (c.nextEvent())
+//       {
+// 
+//         noise.run();
+//       }
+//       noise.finish();
+ 
   }
   
 
