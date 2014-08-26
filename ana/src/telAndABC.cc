@@ -7,7 +7,7 @@
 
 telAndDUT::telAndDUT(tel* t, abc *a) : m_tel(t), m_abc(a)
 {
-  resetEvent();
+//  resetEvent();
   
 }
 
@@ -234,8 +234,10 @@ bool telAndDUT::getNextIsolatedTelElement()
 
 void telAndDUT::resetEvent()
 {
+  eventNR = -1;   
+  nextEvent();      // the class should load the first element to initialize the parameter correct 
   eventNR = -1;
-
+  
 }
 
 void telAndDUT::calcCombination()
