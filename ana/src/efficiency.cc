@@ -102,8 +102,8 @@ void efficiency::run()
     m_tABC->resetABC();
     while ((m_tABC->getNextABCElement()))
     {
-      distance_ABC_channel_Tel_x_pos = abs(channelnr - m_tABC->m_abc_strip_pos);
-      if (distance_ABC_channel_Tel_x_pos<1)
+      distance_ABC_channel_Tel_x_pos = (channelnr - m_tABC->m_abc_strip_pos);
+      if (abs(distance_ABC_channel_Tel_x_pos)<1)
       {
         if (!hit0)
         {
@@ -112,14 +112,14 @@ void efficiency::run()
         }
         
         m_hit =__min(0,m_hit);
-        if (m_distance_ABC_channel_Tel_x_pos>distance_ABC_channel_Tel_x_pos)
+        if (abs(m_distance_ABC_channel_Tel_x_pos)>abs(distance_ABC_channel_Tel_x_pos))
         {
           m_distance_ABC_channel_Tel_x_pos1 =  m_distance_ABC_channel_Tel_x_pos;
           m_distance_ABC_channel_Tel_x_pos =distance_ABC_channel_Tel_x_pos;
         }
 
       }
-      if (distance_ABC_channel_Tel_x_pos<2)
+      if (abs(distance_ABC_channel_Tel_x_pos)<2)
       {
         if (!hit1)
         {
@@ -128,14 +128,14 @@ void efficiency::run()
         }
         
         m_hit = __min(1, m_hit);
-        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        if (abs(m_distance_ABC_channel_Tel_x_pos) > abs(distance_ABC_channel_Tel_x_pos))
         {
           m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
           m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
         }
 
       }
-      if (distance_ABC_channel_Tel_x_pos< 3)
+      if (abs(distance_ABC_channel_Tel_x_pos)< 3)
       {
         if (!hit2)
         {
@@ -144,14 +144,14 @@ void efficiency::run()
         }
         
         m_hit = __min(2, m_hit);
-        if (m_distance_ABC_channel_Tel_x_pos>distance_ABC_channel_Tel_x_pos)
+        if (abs(m_distance_ABC_channel_Tel_x_pos)>abs(distance_ABC_channel_Tel_x_pos))
         {
           m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
           m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
         }
 
       }
-      if (distance_ABC_channel_Tel_x_pos<4)
+      if (abs(distance_ABC_channel_Tel_x_pos)<4)
       {
         if (!hit3)
         {
@@ -160,14 +160,14 @@ void efficiency::run()
         }
         
         m_hit = __min(3, m_hit);
-        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        if (abs(m_distance_ABC_channel_Tel_x_pos )> abs(distance_ABC_channel_Tel_x_pos))
         {
           m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
           m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
         }
 
       }
-      if (distance_ABC_channel_Tel_x_pos<5)
+      if (abs(distance_ABC_channel_Tel_x_pos)<5)
       {
         if (!hit4)
         {
@@ -176,7 +176,7 @@ void efficiency::run()
         }
         
         m_hit = __min(4, m_hit);
-        if (m_distance_ABC_channel_Tel_x_pos > distance_ABC_channel_Tel_x_pos)
+        if (abs(m_distance_ABC_channel_Tel_x_pos)> abs(distance_ABC_channel_Tel_x_pos))
         {
           m_distance_ABC_channel_Tel_x_pos1 = m_distance_ABC_channel_Tel_x_pos;
           m_distance_ABC_channel_Tel_x_pos = distance_ABC_channel_Tel_x_pos;
@@ -291,5 +291,6 @@ void efficiency::createTree(const char* name)
   m_tmap->Branch("dist3", &m_distance_ABC_channel_Tel_x_pos1, "m_dist3/D");
   m_tmap->Branch("isolating", &m_isolating, "m_isolating/D");
   m_tmap->Branch("threshold", &m_thr, "m_thr/D");
+  m_tmap->Branch("TDC", &m_tABC->TDC, "TDC/I");
 }
 
