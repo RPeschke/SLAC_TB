@@ -68,6 +68,7 @@ public:
   Int_t m_abc_threshold;
   Int_t abc_number_of_hits;
   Int_t m_abc_cluster_size;
+  Int_t TDC;
 
   // tel Parameter 
   Int_t m_tel_calc_strip_pos;

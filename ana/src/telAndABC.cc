@@ -52,6 +52,7 @@ void telAndDUT::getTel(elementID i)
 
 void telAndDUT::getABC(elementID i)
 {
+  TDC = m_abc->TDC;
   if (m_abc->cl_address->size() == 0)
   {
     m_abc_strip_pos = -50;
